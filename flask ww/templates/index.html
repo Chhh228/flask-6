@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <!-- Форма добавления задачи -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white fw-bold">Добавить задачу</div>
+            <div class="card-body bg-white">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.title.label(class="form-label fw-semibold") }}
+                        {{ form.title(class="form-control", placeholder="Что нужно сделать?") }}
+                        {% if form.title.errors %}
+                            <div class="text-danger small mt-1">{{ form.title.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.description.label(class="form-label fw-semibold") }}
+                        {{ form.description(class="form-control", rows="3", placeholder="Подробности...") }}
+                        {% if form.description.errors %}
+                            <div class="text-danger small mt-1">{{ form.description.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.priority.label(class="form-label fw-semibold") }}
+                        {{ form.priority(class="form-select") }}
+                        {% if form.priority.errors %}
+                            <div class="text-danger small mt-1">{{ form.priority.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    {{ form.submit(class="btn btn-primary w-100 fw-bold") }}
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Список задач -->
+    <div class="col-md-8">
+        <!-- Кнопки фильтрации -->
+        <div class="mb-3 d-flex gap-2">
+            <a href="{{ url_for('index') }}" class="btn btn-sm {% if not current_filter %}btn-dark{% else %}btn-outline-dark{% endif %}">Все</a>
+            <a href="{{ url_for('index', filter='active') }}" class="btn btn-sm {% if current_filter == 'active' %}btn-dark{% else %}btn-outline-dark{% endif %}">Активные</a>
+            <a href="{{ url_for('index', filter='done') }}" class="btn btn-sm {% if current_filter == 'done' %}btn-dark{% else %}btn-outline-dark{% endif %}">Выполненные</a>
+        </div>
+
+        <!-- Вывод задач -->
+        {% for task in tasks %}
+        <div class="card mb-3 shadow-sm border-0" style="{% if task.done %}opacity: 0.6;{% endif %}">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title mb-0" style="{% if task.done %}text-decoration: line-through;{% endif %}">
+                        {{ task.title }}
+                    </h5>
+                    <span class="badge 
+                        {% if task.priority == 'high' %}bg-danger
+                        {% elif task.priority == 'medium' %}bg-warning
+                        {% else %}bg-success{% endif %}">
+                        {{ task.priority }}
+                    </span>
+                </div>
+                <p class="card-text text-secondary mb-2">{{ task.description }}</p>
+                <p class="card-text mb-3"><small class="text-muted">Создано: {{ task.created_at.strftime('%Y-%m-%d %H:%M') }}</small></p>
+
+                <div class="d-flex gap-2">
+                    {% if not task.done %}
+                    <form action="{{ url_for('mark_done', id=task.id) }}" method="POST">
+                        <button type="submit" class="btn btn-success btn-sm">Выполнено</button>
+                    </form>
+                    {% endif %}
+                    <form action="{{ url_for('delete_task', id=task.id) }}" method="POST">
+                        <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-secondary text-center border-0 shadow-sm">Нет задач для отображения.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
