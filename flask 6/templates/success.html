@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Успешная регистрация</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #1e1e1e; color: #fff; max-width: 500px; margin: 40px auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); text-align: center; }
+        h1 { color: #20c997; font-size: 26px; }
+        .data-card { background-color: #2d2d2d; padding: 20px; border-radius: 6px; text-align: left; margin-top: 20px; border: 1px solid #444; }
+        .data-card p { margin: 10px 0; font-size: 15px; }
+        .data-card strong { color: #aaa; }
+        a.btn { display: inline-block; margin-top: 25px; padding: 12px 20px; background-color: #0d6efd; color: white; text-decoration: none; border-radius: 4px; transition: background 0.3s; }
+        a.btn:hover { background-color: #0b5ed7; }
+    </style>
+</head>
+<body>
+    <h1>Регистрация прошла успешно!</h1>
+    
+    <div class="data-card">
+        <p><strong>Имя:</strong> {{ participant.name }}</p>
+        <p><strong>Email:</strong> {{ participant.email }}</p>
+        <p><strong>Возраст:</strong> {{ participant.age }}</p>
+        <p><strong>Направление:</strong> {{ participant.track }}</p>
+        <p><strong>Опыт работы (лет):</strong> {{ participant.experience }}</p>
+    </div>
+
+    <a href="{{ url_for('register') }}" class="btn">Зарегистрировать ещё одного</a>
+</body>
+</html>

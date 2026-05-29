@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация на конференцию</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #1e1e1e; color: #fff; max-width: 500px; margin: 40px auto; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        h1 { text-align: center; font-size: 24px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #ccc; }
+        input[type="text"], input[type="email"], input[type="number"], select {
+            width: 100%; padding: 10px; border: 1px solid #444; border-radius: 4px; box-sizing: border-box; background-color: #2d2d2d; color: #fff;
+        }
+        .error { color: #ff6b6b; font-size: 0.85em; display: block; margin-top: 5px; }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 20px;}
+        .checkbox-group label { margin-bottom: 0; font-weight: normal; }
+        input[type="submit"] {
+            width: 100%; padding: 12px; background-color: #0d6efd; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; transition: background 0.3s;
+        }
+        input[type="submit"]:hover { background-color: #0b5ed7; }
+    </style>
+</head>
+<body>
+    <h1>Анкета участника</h1>
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ form.name.label }}
+            {{ form.name(placeholder="Иван Иванов") }}
+            {% if form.name.errors %}
+                <span class="error">{{ form.name.errors[0] }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.email.label }}
+            {{ form.email(placeholder="ivan@example.com") }}
+            {% if form.email.errors %}
+                <span class="error">{{ form.email.errors[0] }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.age.label }}
+            {{ form.age(placeholder="25") }}
+            {% if form.age.errors %}
+                <span class="error">{{ form.age.errors[0] }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.track.label }}
+            {{ form.track() }}
+            {% if form.track.errors %}
+                <span class="error">{{ form.track.errors[0] }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form.experience.label }}
+            {{ form.experience(placeholder="3") }}
+            {% if form.experience.errors %}
+                <span class="error">{{ form.experience.errors[0] }}</span>
+            {% endif %}
+        </div>
+
+        <div class="checkbox-group">
+            {{ form.agree() }}
+            {{ form.agree.label }}
+        </div>
+        {% if form.agree.errors %}
+            <span class="error" style="margin-top:-15px; margin-bottom:15px;">{{ form.agree.errors[0] }}</span>
+        {% endif %}
+
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+</body>
+</html>
